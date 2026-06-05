@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} | Pulse Blog{% endblock %}
+{% block content %}
+<div class="row gy-4">
+  <div class="col-lg-8">
+    <div class="card shadow-sm mb-4">
+      {% if post.featured_image %}
+      <img src="{{ post.featured_image.url }}" class="card-img-top" alt="{{ post.title }}" />
+      {% endif %}
+      <div class="card-body">
+        <span class="featured-badge">{{ post.category.category_name }}</span>
+        <h1 class="card-title mt-3">{{ post.title }}</h1>
+        <p class="text-muted">By {{ post.author.get_full_name|default:post.author.username }} · {{ post.created_at|date:"F d, Y" }}</p>
+        <p class="lead">{{ post.short_description }}</p>
+        <hr />
+        <div class="mb-4">{{ post.blog_body|linebreaks }}</div>
+        <a class="btn btn-outline-primary" href="{% url 'category_posts' post.category.id %}">More in {{ post.category.category_name }}</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="p-4 bg-body-tertiary rounded shadow-sm mb-4">
+      <h5>Post summary</h5>
+      <p>{{ post.short_description }}</p>
+      <p class="mb-0"><strong>Status:</strong> {{ post.get_status_display }}</p>
+    </div>
+    <div class="p-4 bg-white rounded shadow-sm">
+      <h5>Related stories</h5>
+      <ul class="list-unstyled mb-0">
+        {% for related in related_posts %}
+        <li class="mb-3">
+          <a href="{{ related.get_absolute_url }}" class="text-decoration-none">{{ related.title }}</a>
+          <div class="small text-muted">{{ related.created_at|date:"M d, Y" }}</div>
+        </li>
+        {% empty %}
+        <li class="text-body-secondary">No related posts yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

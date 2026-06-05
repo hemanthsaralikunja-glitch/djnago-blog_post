@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Contact | Pulse Blog{% endblock %}
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded bg-white shadow-sm">
+  <div class="row align-items-center">
+    <div class="col-md-8">
+      <h1 class="display-5 fw-bold">Get in touch</h1>
+      <p class="lead text-body-secondary">Ask questions, share ideas, or request a new blog topic. Our team is ready to hear from you.</p>
+    </div>
+  </div>
+</div>
+
+{% if success %}
+<div class="alert alert-success">Thank you for your message. We'll respond as soon as possible.</div>
+{% endif %}
+
+<div class="row">
+  <div class="col-lg-7 mb-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4 class="card-title mb-4">Contact form</h4>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          <div class="mb-3">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {% if form.name.errors %}<div class="text-danger small">{{ form.name.errors.0 }}</div>{% endif %}
+          </div>
+          <div class="mb-3">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors.0 }}</div>{% endif %}
+          </div>
+          <div class="mb-3">
+            {{ form.subject.label_tag }}
+            {{ form.subject }}
+            {% if form.subject.errors %}<div class="text-danger small">{{ form.subject.errors.0 }}</div>{% endif %}
+          </div>
+          <div class="mb-3">
+            {{ form.message.label_tag }}
+            {{ form.message }}
+            {% if form.message.errors %}<div class="text-danger small">{{ form.message.errors.0 }}</div>{% endif %}
+          </div>
+          <button type="submit" class="btn btn-primary">Send message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="p-4 bg-body-tertiary rounded shadow-sm">
+      <h4>Contact details</h4>
+      <p class="mb-1"><strong>Email:</strong> hello@pulseblog.example</p>
+      <p class="mb-1"><strong>Phone:</strong> +1 (555) 123-4567</p>
+      <p>Use the form to tell us what you want to see next, from new blog categories to fresh featured content.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

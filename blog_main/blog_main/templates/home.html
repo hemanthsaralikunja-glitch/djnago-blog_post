@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Home | Pulse Blog{% endblock %}
+{% block content %}
+<section class="page-hero mb-5" style="background-image: url('/media/uploads/2026/05/30/Chamber-House-of-Commons-Houses-Parliament-London.webp');">
+  <div class="container h-100 text-dark d-flex align-items-center">
+    <div class="row w-100">
+      <div class="col-lg-8">
+        <h1 class="display-4 fw-bold">A bigger blog with stronger storytelling.</h1>
+        <p class="lead">This project now uses your uploaded background image to create a bold editorial hero section with a polished modern feel.</p>
+        <p>Browse featured stories, discover category collections, and read deep-dive posts built to feel like a complete publication.</p>
+        <p class="mb-0">
+          <a class="btn btn-dark btn-lg me-2" href="{% url 'about' %}">Learn more</a>
+          <a class="btn btn-outline-dark btn-lg" href="{% url 'contact' %}">Contact us</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mb-5">
+  <div class="row">
+    <div class="col-lg-4 mb-3">
+      <div class="p-4 bg-white rounded shadow-sm h-100">
+        <h3>Why this blog?</h3>
+        <p class="text-body-secondary">A well-structured blog should highlight the best content, make it easy to browse, and feel inviting from the first page.</p>
+      </div>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <div class="p-4 bg-white rounded shadow-sm h-100">
+        <h3>Faster browsing</h3>
+        <p class="text-body-secondary">Dedicated category pages and post detail views help visitors quickly find stories around topics they care about.</p>
+      </div>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <div class="p-4 bg-white rounded shadow-sm h-100">
+        <h3>All in one place</h3>
+        <p class="text-body-secondary">From featured highlights to contact outreach, the project now feels like a larger, more complete blog site.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if feature_posts %}
+<div class="row mb-4">
+  <div class="col-12">
+    <h2 class="mb-3">Featured stories</h2>
+  </div>
+  {% for post in feature_posts %}
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm post-card">
+      <div class="card-body d-flex flex-column">
+        <span class="featured-badge mb-2">Featured</span>
+        <h5 class="card-title">{{ post.title }}</h5>
+        <p class="card-text text-body-secondary">{{ post.short_description|truncatechars:120 }}</p>
+        <p class="mt-auto text-muted small">{{ post.created_at|date:"M d, Y" }}</p>
+        <a class="stretched-link" href="{{ post.get_absolute_url }}"></a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="row">
+  <div class="col-lg-8">
+    <h2 class="mb-3">All blog posts</h2>
+    <div class="row g-4">
+      {% for post in latest_posts %}
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm post-card">
+          <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="text-muted small mb-2">{{ post.category.category_name }} · {{ post.created_at|date:"M d, Y" }}</p>
+            <p class="card-text">{{ post.short_description|truncatechars:140 }}</p>
+            <a class="btn btn-sm btn-primary" href="{{ post.get_absolute_url }}">Continue reading</a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="alert alert-secondary">No posts are published yet. Add your first story in the admin panel.</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="p-4 mb-4 bg-body-tertiary rounded shadow-sm">
+      <h4>Popular categories</h4>
+      <ul class="list-group list-group-flush">
+        {% for category in popular_categories %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <a class="text-decoration-none" href="{% url 'category_posts' category.id %}">{{ category.category_name }}</a>
+          <span class="badge bg-primary rounded-pill">{{ category.post_count }}</span>
+        </li>
+        {% empty %}
+        <li class="list-group-item text-body-secondary">No categories available yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="p-4 bg-white rounded shadow-sm">
+      <h4>Fresh updates</h4>
+      <p class="mb-0">This project now supports dedicated detail pages, category navigation, and a contact form to make the site feel complete.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

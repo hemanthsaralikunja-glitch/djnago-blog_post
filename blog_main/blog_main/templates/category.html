@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ category.category_name }} | Pulse Blog{% endblock %}
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded bg-white shadow-sm">
+  <h1 class="display-5 fw-bold">{{ category.category_name }}</h1>
+  <p class="lead text-body-secondary">A curated collection of articles for the {{ category.category_name }} category.</p>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    {% if posts %}
+      {% for post in posts %}
+      <div class="card mb-4 post-card shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title">{{ post.title }}</h3>
+          <p class="card-text text-body-secondary">{{ post.short_description|truncatechars:160 }}</p>
+          <p class="small text-muted mb-1">Published {{ post.created_at|date:"M d, Y" }}</p>
+          <a href="{{ post.get_absolute_url }}" class="stretched-link">Read more</a>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="alert alert-secondary">No posts are published in this category yet.</div>
+    {% endif %}
+  </div>
+  <div class="col-lg-4">
+    <div class="p-4 bg-body-tertiary rounded shadow-sm">
+      <h5>Category details</h5>
+      <p class="mb-0">This category collects posts related to {{ category.category_name }}. Explore the latest editorial stories in this topic.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
